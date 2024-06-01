@@ -5,6 +5,7 @@ import MyLocationIcon from "@mui/icons-material/MyLocation";
 import PersonIcon from "@mui/icons-material/Person";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { Divider } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Tab, { TabProps } from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -97,31 +98,36 @@ const SideBar = (props: ISidebar) => {
       <ResponsiveTab
         icon={<PlayArrowIcon />}
         iconPosition="start"
-        label="Acción"
+        label="Acción" // FIXME - i18n
         {...a11yProps(0)}
       />
       <ResponsiveTab
+        disabled={true}
         icon={<MyLocationIcon />}
         iconPosition="start"
-        label="Navegación"
+        label="Navegación" // FIXME - i18n
         {...a11yProps(1)}
       />
       <ResponsiveTab
+        disabled={true}
         icon={<PersonIcon />}
         iconPosition="start"
-        label="Ficha"
+        label="Ficha" // FIXME - i18n
         {...a11yProps(2)}
       />
       <ResponsiveTab
+        disabled={true}
         icon={<FormatListBulletedIcon />}
         iconPosition="start"
-        label="Tareas"
+        label="Tareas" // FIXME - i18n
         {...a11yProps(3)}
       />
+      <Divider />
       <ResponsiveTab
+        disabled={true}
         icon={<SettingsIcon />}
         iconPosition="start"
-        label="Configuración"
+        label="Configuración" // FIXME - i18n
         {...a11yProps(4)}
       />
     </Tabs>

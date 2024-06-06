@@ -10,17 +10,6 @@ import AppBar from "../AppBar";
 import Option from "../Option";
 import SideBar from "../SideBar";
 
-type Storylet = {
-  key: string;
-  storylet: React.ReactNode;
-};
-
-type StoryProviderProps = {
-  children?: React.ReactNode | ((context: unknown) => React.ReactNode);
-  initialStorylet: Storylet;
-  storylets: Storylet[];
-};
-
 const Main = styled("main")(() => ({
   display: "flex",
   flexDirection: "column",
@@ -38,11 +27,14 @@ const Container = styled(MuiContainer)(({ theme }) => ({
   },
 }));
 
+export interface IStoryProvider {
+  story: string;
+}
+
 export const StoryContext = React.createContext({});
 
-const StoryProvider = (props: StoryProviderProps) => {
-  console.log(`🔔 props`, props);
-
+const StoryProvider: React.FC<IStoryProvider> = (props) => {
+  const { story: storyFile } = props;
   const theme = useTheme();
 
   // FIXME - define correct type
@@ -86,23 +78,28 @@ const StoryProvider = (props: StoryProviderProps) => {
     return (
       <Stack direction="column" spacing={1} sx={{ marginTop: 8 }}>
         {story?.canContinue ? (
-          <Option onClick={() => handleContinue()}>...</Option>
+          <Option onClick={() => handleContinue()} variant="default">
+            ...
+          </Option>
         ) : (
           <>
             {// FIXME - define correct type
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             story?.currentChoices.map((element: any, index: number) => {
+              console.log(`🔔 element`, element);
+
               const moneyCost = parseInt(element.tags?.[0] ?? "0");
               return (
                 <Option
                   key={`option-${index}`}
-                  difficulty={moneyCost > 0 ? moneyCost : undefined}
+                  attribute={element.tags?.[0]}
+                  difficulty={element.tags?.[1]}
                   disabled={moneyCost > story?.variablesState["money"]}
                   onClick={() => {
                     story.ChooseChoiceIndex(index);
                     handleContinue();
                   }}
-                  variant={moneyCost > 0 ? "money" : undefined}>
+                  variant="election">
                   {element.text}
                 </Option>
               );
@@ -115,7 +112,7 @@ const StoryProvider = (props: StoryProviderProps) => {
 
   React.useEffect(() => {
     const fetchStory = async () => {
-      const storyData = await fetch("ulises.json");
+      const storyData = await fetch(storyFile);
       const result = await storyData.text();
       const inkStory = new Story(result);
       setContents([inkStory.Continue()]);

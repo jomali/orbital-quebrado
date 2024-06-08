@@ -1,0 +1,9 @@
+#dice-box,
+#dice-box canvas {
+  height: 100%;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1101; /* Material-UI AppBar + 1px */
+}

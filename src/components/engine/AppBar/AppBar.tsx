@@ -36,7 +36,7 @@ const AppBar = () => {
           <Toolbar>
             <Typography
               sx={{ fontWeight: (theme) => theme.typography.fontWeightBold }}>
-              Header
+              Orbital Quebrado
             </Typography>
           </Toolbar>
         </MuiAppBar>

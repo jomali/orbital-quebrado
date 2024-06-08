@@ -44,25 +44,25 @@ export default createTheme(theme, {
   attribute: {
     intellect: theme.palette.augmentColor({
       color: {
-        main: "#3385FF",
+        main: "#6ba3af",
       },
       name: "intellect",
     }),
     motorics: theme.palette.augmentColor({
       color: {
-        main: "#33FF44",
+        main: "#48E748",
       },
       name: "motorics",
     }),
     physique: theme.palette.augmentColor({
       color: {
-        main: "#FF5233",
+        main: "#ff5439",
       },
       name: "physique",
     }),
     psyche: theme.palette.augmentColor({
       color: {
-        main: "#CF33FF",
+        main: "#b354ca",
       },
       name: "psyche",
     }),

@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import { motion } from "framer-motion";
 import { Story } from "inkjs";
 import AppBar from "../AppBar";
+import Dice from "../Dice";
+import DiceResult from "../DiceResult";
 import Option, { IOption } from "../Option";
 import SideBar from "../SideBar";
 
@@ -43,6 +45,7 @@ const StoryProvider: React.FC<IStoryProvider> = (props) => {
 
   const [contents, setContents] = React.useState<(string | null)[]>([]);
   const [currentView, setView] = React.useState(0);
+  const [diceResult, setDiceResult] = React.useState<number | null>();
   const [story, setStory] = React.useState<InstanceType<typeof Story>>();
 
   const getNextContent = () => {
@@ -96,12 +99,22 @@ const StoryProvider: React.FC<IStoryProvider> = (props) => {
                   attribute={attribute?.[1] as IOption["attribute"]}
                   difficulty={Number(attribute?.[2])}
                   // disabled={moneyCost > story?.variablesState["money"]}
-                  onClick={() => {
+                  onClick={async () => {
                     story.ChooseChoiceIndex(index);
                     if (element.tags[1]) {
-                      const result = Math.floor(Math.random() * 2);
+                      const [result] = await Dice.show().roll([
+                        {
+                          sides: "d100",
+                          themeColor: theme.palette.primary.main,
+                        },
+                      ]);
+                      console.log(`🔔 result`, result);
+
+                      setDiceResult(result.value);
+
+                      // const result = Math.floor(Math.random() * 2);
                       story.ChoosePathString(
-                        result ? element.tags[2] : element.tags[1]
+                        result.value < 50 ? element.tags[2] : element.tags[1]
                       );
                     }
                     handleContinue();
@@ -127,7 +140,7 @@ const StoryProvider: React.FC<IStoryProvider> = (props) => {
     };
 
     fetchStory();
-  }, []);
+  }, [storyFile]);
 
   React.useEffect(() => {
     if (scrollableRef.current) {
@@ -177,6 +190,12 @@ const StoryProvider: React.FC<IStoryProvider> = (props) => {
           <SideBar onChange={setView} value={currentView} />
         </Container>
       </Main>
+
+      <DiceResult
+        difficulty={50}
+        onClose={() => setDiceResult(null)}
+        value={diceResult}
+      />
     </StoryContext.Provider>
   );
 };

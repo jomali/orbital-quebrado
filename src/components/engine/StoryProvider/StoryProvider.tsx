@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { motion } from "framer-motion";
 import { Story } from "inkjs";
 import AppBar from "../AppBar";
-import Option from "../Option";
+import Option, { IOption } from "../Option";
 import SideBar from "../SideBar";
 
 const Main = styled("main")(() => ({
@@ -86,20 +86,27 @@ const StoryProvider: React.FC<IStoryProvider> = (props) => {
             {// FIXME - define correct type
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             story?.currentChoices.map((element: any, index: number) => {
+              const attribute = element.tags[0]?.match(/(.*)\((\d*)\)/);
               console.log(`🔔 element`, element);
 
-              const moneyCost = parseInt(element.tags?.[0] ?? "0");
+              // const moneyCost = parseInt(element.tags?.[0] ?? "0");
               return (
                 <Option
                   key={`option-${index}`}
-                  attribute={element.tags?.[0]}
-                  difficulty={element.tags?.[1]}
-                  disabled={moneyCost > story?.variablesState["money"]}
+                  attribute={attribute?.[1] as IOption["attribute"]}
+                  difficulty={Number(attribute?.[2])}
+                  // disabled={moneyCost > story?.variablesState["money"]}
                   onClick={() => {
                     story.ChooseChoiceIndex(index);
+                    if (element.tags[1]) {
+                      const result = Math.floor(Math.random() * 2);
+                      story.ChoosePathString(
+                        result ? element.tags[2] : element.tags[1]
+                      );
+                    }
                     handleContinue();
                   }}
-                  variant="election">
+                  variant={element.variant as "election" | undefined}>
                   {element.text}
                 </Option>
               );

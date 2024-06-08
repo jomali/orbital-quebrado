@@ -20,37 +20,37 @@ Los focos del almacén parecen orbitar a tu alrededor a toda velocidad. Como dec
 
 Y entonces te estrellas con una de las paredes de la jaula. Con cierta dificultad consigues aferrarte a la malla metálica y recuperar el control.
 
-La multitud apelotonada en el almacén grita. Están eufóricos después de ese último crochet que te ha encajado Lecilia.
+La multitud apelotonada en el almacén grita. Están eufóricos después de ese último golpe que te ha encajado Lecilia.
 
 * [La busco con la mirada]
 
 -
-Necesitas un momento para ubicarla de nuevo. La encuentras sobre tu cabeza, a algunos metros de distancia, colocada en otra de las caras que delimita el cubículo del ring. 
+Aún desorientado, necesitas un momento para ubicarla de nuevo. Está sobre tu cabeza a algunos metros de distancia, agarrada a uno de los tirantes que cruzan el cubículo del ring.
 
-* [Me adelanto y ataco primero #physique #10] -> Combate.asaltoUnoAtaque
-* [Estudio sus movimientos buscando un punto débil #intellect #10] -> Combate.asaltoUnoEstudio
-
-= asaltoUnoAtaque
-
--> DONE
+* [Me adelanto y ataco primero #physique(50) #Combate.asaltoUnoAtaque_exito #Combate.asaltoUnoAtaque_fracaso] -> DONE
+* [Estudio sus movimientos buscando un punto débil #intellect(50) #Combate.asaltoUnoEstudio_exito #Combate.asaltoUnoEstudio_fracaso] -> DONE
 
 = asaltoUnoAtaque_exito
+
+Ataque con éxito.
 
 -> Combate.asaltoDos
 
 = asaltoUnoAtaque_fracaso
 
+Ataque fracasado.
+
 -> Combate.asaltoDos
 
-= asaltoUnoEstudio
-
--> DONE
-
 = asaltoUnoEstudio_exito
+
+Estudio éxito.
 
 -> Combate.asaltoDos
 
 = asaltoUnoEstudio_fracaso
+
+Estudio fracaso.
 
 -> Combate.asaltoDos
 

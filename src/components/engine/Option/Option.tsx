@@ -1,7 +1,5 @@
 import React from "react";
-import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
 import ButtonBase from "@mui/material/ButtonBase";
-import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
@@ -11,7 +9,7 @@ export interface IOption {
   difficulty?: number;
   disabled?: boolean;
   onClick: VoidFunction;
-  variant?: "default" | "election";
+  variant?: "default" | "election" | "highlight";
 }
 
 const Button = styled(ButtonBase, {
@@ -32,63 +30,106 @@ const Button = styled(ButtonBase, {
   }),
 }));
 
+const AttributeSpan = styled("span", {
+  shouldForwardProp: (prop) => prop !== "attribute",
+})(({ attribute, theme }: { attribute: string; theme?: any }) => ({
+  color: theme.attribute[attribute].main,
+  marginRight: theme.spacing(1.2),
+}));
+
 const Option: React.FC<IOption> = (props) => {
   const {
     attribute = "default",
     children,
     difficulty,
     disabled,
-    variant,
+    variant = "default",
     ...otherProps
   } = props;
 
-  const ButtonAppendix = React.useMemo(() => {
+  const difficultyString = React.useMemo(() => {
+    let result;
+    if (difficulty) {
+      if (difficulty < 20) {
+        result = "Muy fácil";
+      } else if (difficulty < 40) {
+        result = "Fácil";
+      } else if (difficulty < 60) {
+        result = "Normal";
+      } else if (difficulty < 80) {
+        result = "Difícil";
+      } else {
+        result = "Muy difícil";
+      }
+    }
+    return result;
+  }, [difficulty]);
+
+  const buttonContents = React.useMemo(() => {
     switch (attribute) {
       case "intellect":
+        return (
+          <>
+            <AttributeSpan attribute={attribute}>
+              [Intelecto - {difficultyString}]
+            </AttributeSpan>
+            {children}
+          </>
+        );
       case "motorics":
+        return (
+          <>
+            <AttributeSpan attribute={attribute}>
+              [Motricidad - {difficultyString}]
+            </AttributeSpan>
+            {children}
+          </>
+        );
       case "physique":
+        return (
+          <>
+            <AttributeSpan attribute={attribute}>
+              [Físico - {difficultyString}]
+            </AttributeSpan>
+            {children}
+          </>
+        );
       case "psyche":
         return (
-          <Stack direction="row" spacing={0.4}>
-            <Typography>{difficulty ?? 0}</Typography>
-            <CurrencyLiraIcon />
-          </Stack>
+          <>
+            <AttributeSpan attribute={attribute}>
+              [Psique - {difficultyString}]
+            </AttributeSpan>
+            {children}
+          </>
         );
       default:
-        return null;
+        return children;
     }
-  }, [difficulty, attribute]);
+  }, [attribute, children, difficultyString]);
 
   return (
     <Button
       disabled={disabled}
       focusRipple
       sx={{
-        ...(variant === "default" && {
-          backgroundColor: "transparent",
-          border: "1px solid",
-          color: (theme) => theme.palette.primary.main,
-        }),
-        ...(attribute === "intellect" && {
-          backgroundColor: (theme) => theme.attribute.intellect.main,
-          color: (theme) => theme.attribute.intellect.contrastText,
-        }),
-        ...(attribute === "motorics" && {
-          backgroundColor: (theme) => theme.attribute.motorics.main,
-          color: (theme) => theme.attribute.motorics.contrastText,
-        }),
-        ...(attribute === "physique" && {
-          backgroundColor: (theme) => theme.attribute.physique.main,
-          color: (theme) => theme.attribute.physique.contrastText,
-        }),
-        ...(attribute === "psyche" && {
-          backgroundColor: (theme) => theme.attribute.psyche.main,
-          color: (theme) => theme.attribute.psyche.contrastText,
+        backgroundColor: "transparent",
+        border: "1px solid",
+        color: (theme) => theme.palette.primary.main,
+        ...(variant === "highlight" && {
+          backgroundColor: (theme) => theme.palette.primary.main,
+          border: 0,
+          color: (theme) => theme.palette.primary.contrastText,
         }),
       }}
       {...otherProps}>
-      <Typography>{children}</Typography>
-      {ButtonAppendix}
+      <Typography
+        sx={{
+          display: "initial",
+          // flexDirection: "row",
+        }}>
+        {buttonContents}
+      </Typography>
     </Button>
   );
 };

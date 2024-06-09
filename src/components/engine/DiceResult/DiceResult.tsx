@@ -11,12 +11,12 @@ import "./diceResult.css";
 
 export interface IDiceResult {
   difficulty?: number;
-  onClose: VoidFunction;
-  value?: number;
+  onAccept: (isSuccess: boolean) => void;
+  open: boolean;
 }
 
 const DiceResult: React.FC<IDiceResult> = (props) => {
-  const { difficulty, onClose, value } = props;
+  const { difficulty = 0, onAccept, open } = props;
   const theme = useTheme();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -25,24 +25,29 @@ const DiceResult: React.FC<IDiceResult> = (props) => {
 
   const diceBoxRef = React.useRef<any>();
 
-  const rollDice = async () => {
-    if (diceBox) {
-      setIsLoading(true);
-      const [result] = await diceBox.show().roll([
-        {
-          sides: "d100",
-          themeColor: theme.palette.primary.main,
-        },
-      ]);
-      console.log(`🔔 result`, result);
-      setIsLoading(false);
-      setDiceResult(result.value);
+  React.useEffect(() => {
+    const rollDice = async () => {
+      if (diceBox) {
+        setIsLoading(true);
+        const [result] = await diceBox.show().roll([
+          {
+            sides: "d100",
+            themeColor: theme.palette.primary.main,
+          },
+        ]);
+        setIsLoading(false);
+        setDiceResult(result.value);
+      }
+    };
+
+    if (open) {
+      rollDice();
     }
-  };
+  }, [open]);
 
   const handleClose = () => {
     setDiceResult(null);
-    onClose();
+    onAccept((diceResult ?? 0) >= difficulty);
   };
 
   React.useLayoutEffect(() => {
@@ -56,12 +61,12 @@ const DiceResult: React.FC<IDiceResult> = (props) => {
           enableShadows: true,
           id: "dice-canvas", // canvas element id
           lightIntensity: 0.9,
-          scale: 13, // 7.5
-          spinForce: 5,
-          startingHeight: 8,
+          scale: 13,
+          spinForce: 10,
+          startingHeight: 10,
           theme: "smooth",
           themeColor: theme.palette.primary.main,
-          throwForce: 6,
+          throwForce: 8,
         }
       );
       dice.init();
@@ -71,16 +76,18 @@ const DiceResult: React.FC<IDiceResult> = (props) => {
 
   const dialogButtonLabel = React.useMemo(() => {
     let result = "";
-    if (value && !diceResult) {
-      result = "Lanzar dados";
-    } else if (diceResult) {
+    if (open && !diceResult) {
       result = "Continuar";
+    } else if (diceResult && diceResult >= difficulty) {
+      result = "Éxito";
+    } else if (diceResult && diceResult < difficulty) {
+      result = "Fracaso";
     }
     return result;
-  }, [diceResult, value]);
+  }, [diceResult, difficulty, open]);
 
   return (
-    <Dialog fullWidth keepMounted maxWidth="xs" open={Boolean(value)}>
+    <Dialog fullWidth keepMounted maxWidth="xs" open={open}>
       <DialogTitle
         sx={{
           display: "flex",
@@ -99,11 +106,13 @@ const DiceResult: React.FC<IDiceResult> = (props) => {
       <DialogActions
         sx={{ justifyContent: "center", paddingBottom: "20px", paddingTop: 0 }}>
         <LoadingButton
+          disabled={isLoading}
           disableElevation
           loading={isLoading}
-          // onClick={rollDice}
-          onClick={() => (!diceResult ? rollDice() : handleClose())}
+          onClick={handleClose}
+          // onClick={() => (!diceResult ? rollDice() : handleClose())}
           size="large"
+          sx={{ width: "200px" }}
           variant="contained">
           {dialogButtonLabel}
         </LoadingButton>

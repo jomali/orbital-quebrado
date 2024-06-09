@@ -23,6 +23,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ["react", 'react-refresh'],
   rules: {
+    "@typescript-eslint/no-explicit-any": "warn",
     "import/order": [
       "warn",
       {

@@ -8,7 +8,7 @@ VAR psyche = 0
 
 -> Combate
 
-=== Combate ===
+=== Combate_ ===
 
 Hacer acrobacias en gravedad cero suele ser divertido. De verdad.
 
@@ -25,10 +25,13 @@ La multitud apelotonada en el almacén grita. Están eufóricos después de ese 
 * [La busco con la mirada]
 
 -
+-> END
+
+=== Combate
 Aún desorientado, necesitas un momento para ubicarla de nuevo. Está sobre tu cabeza a algunos metros de distancia, agarrada a uno de los tirantes que cruzan el cubículo del ring.
 
-* [Me adelanto y ataco primero #physique(50) #Combate.asaltoUnoAtaque_exito #Combate.asaltoUnoAtaque_fracaso] -> DONE
-* [Estudio sus movimientos buscando un punto débil #intellect(50) #Combate.asaltoUnoEstudio_exito #Combate.asaltoUnoEstudio_fracaso] -> DONE
++ [Me adelanto y ataco primero #physique(50) #Combate.asaltoUnoAtaque_exito #Combate.asaltoUnoAtaque_fracaso] -> DONE
++ [Estudio sus movimientos buscando un punto débil #intellect(50) #Combate.asaltoUnoEstudio_exito #Combate.asaltoUnoEstudio_fracaso] -> DONE
 
 = asaltoUnoAtaque_exito
 
@@ -55,6 +58,8 @@ Estudio fracaso.
 -> Combate.asaltoDos
 
 = asaltoDos
+
+-> Combate
 
 Once upon a time...
 

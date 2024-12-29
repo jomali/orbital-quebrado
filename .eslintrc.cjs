@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const prettierConfig = require("./.prettierrc.cjs");
 
 const getAllDirs = (dir) => {
   const directoryPath = path.join(__dirname, dir);
@@ -9,21 +8,43 @@ const getAllDirs = (dir) => {
 };
 
 module.exports = {
-  root: true,
-  env: { browser: true, es2020: true },
+  env: {
+    browser: true,
+    es2021: true
+  },
   extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:import/recommended",
-    "plugin:import/typescript",
-    "plugin:prettier/recommended",
-    'plugin:react-hooks/recommended',
+    "plugin:jsx-a11y/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "eslint-config-prettier",
+    "plugin:prettier/recommended"
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ["react", 'react-refresh'],
+  plugins: ['react-refresh'],
+  root: true,
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "paths": [
+          "src"
+        ],
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    }
+  },
   rules: {
-    "@typescript-eslint/no-explicit-any": "warn",
     "import/order": [
       "warn",
       {
@@ -53,23 +74,21 @@ module.exports = {
         pathGroupsExcludedImportTypes: ["react"],
       },
     ],
-    // Fail if the file does not follow the Prettier formatting rules.
-    // Uses the framework's prettier config.
-    // https://github.com/prettier/eslint-plugin-prettier
-    "prettier/prettier": ["error", prettierConfig],
-    // This rule checks all JSX components and verifies that all props are
-    // sorted alphabetically. A spread attribute resets the verification.
-    // https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/jsx-sort-props.md
-    "react/jsx-sort-props": [
-      "warn",
+    "no-unused-vars": [
+      "error",
       {
-        callbacksLast: false,
-        ignoreCase: true,
-        noSortAlphabetically: false,
-        reservedFirst: true,
-        shorthandFirst: false,
-        shorthandLast: false,
-      },
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": true,
+        "argsIgnorePattern": "^_"
+      }
     ],
-  }
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
+    // Disallow the `any` type
+    // https://typescript-eslint.io/rules/no-explicit-any/
+    "@typescript-eslint/no-explicit-any": "warn"
+  },
 }

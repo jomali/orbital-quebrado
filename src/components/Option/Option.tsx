@@ -1,7 +1,6 @@
 import React from "react";
-import ButtonBase from "@mui/material/ButtonBase";
 import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
+import Button from "../Button";
 
 export interface IOption {
   attribute?: "default" | "intellect" | "motorics" | "physique" | "psyche";
@@ -72,39 +71,13 @@ const Option: React.FC<IOption> = (props) => {
   );
 
   return (
-    <ButtonBase
+    <Button
       disabled={disabled}
-      focusRipple
-      sx={(theme) => ({
-        backgroundColor: "transparent",
-        border: `1px solid ${theme.palette.primary.main}`,
-        borderRadius: `${theme.shape.borderRadius}px`,
-        color: (theme) => theme.palette.primary.main,
-        display: "flex",
-        flexGrow: 1,
-        padding: theme.spacing(1.2, 3.2),
-        ...(disabled && {
-          backgroundColor: theme.palette.action.disabledBackground,
-          color: theme.palette.action.disabled,
-        }),
-        ...(variant === "highlight" && {
-          backgroundColor: theme.palette.primary.main,
-          color: theme.palette.primary.contrastText,
-        }),
-      })}
+      variant={variant === "highlight" ? "contained" : "outlined"}
       {...otherProps}
     >
-      <Typography
-        sx={{
-          display: "flex",
-          flexGrow: 1,
-          gap: (theme) => theme.spacing(1.2),
-          justifyContent: "center",
-        }}
-      >
-        {buttonContents}
-      </Typography>
-    </ButtonBase>
+      {buttonContents}
+    </Button>
   );
 };
 

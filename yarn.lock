@@ -13,11 +13,6 @@
     copy-dir "^1.3.0"
     node-abort-controller "^3.1.1"
 
-"@3d-dice/theme-smooth-pip@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@3d-dice/theme-smooth-pip/-/theme-smooth-pip-0.2.1.tgz#b111939c3155f8ca9dc31e394e3abe3797f0d2bd"
-  integrity sha512-FroK0xOEycCQtENXIItiIR0E+jE/aHK+eozqUoev4BM4BwaccwlVN7Mv/Mhmfm653GghupNIU4nmEK+owmaIZg==
-
 "@3d-dice/theme-smooth@^0.2.1":
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/@3d-dice/theme-smooth/-/theme-smooth-0.2.1.tgz#e71f10e9f3bde515e073d37b2bc7cb76472e255e"

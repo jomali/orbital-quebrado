@@ -1,1 +1,1 @@
-export { default } from "./DiceResult";
+export { default } from "./DiceResult_refactor";
